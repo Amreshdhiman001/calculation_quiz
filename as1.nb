@@ -1,0 +1,34 @@
+ClearAll[MathGame]
+
+MathGame[] := 
+ Module[{question, answer, userAnswer, score = 0, gameOver = False}, 
+  While[! gameOver, question = GenerateQuestion[];
+   answer = SolveQuestion[question];
+   Print["Question: ", question];
+   userAnswer = Input["Your Answer: "];
+   If[userAnswer == answer, Print["Correct!"];
+    score++;, Print["Incorrect. The correct answer is ", answer];
+    gameOver = True;]];
+  Print["Game Over. Your Score: ", score];]
+
+GenerateQuestion[] := 
+ Module[{questionType, question}, 
+  questionType = RandomChoice[{"Geometry", "Arithmetic"}];
+  If[questionType == "Geometry", 
+   question = RandomChoice[{"Area", "Perimeter"}];
+   If[question == "Area", {questionType, question, 
+     RandomInteger[{2, 10}], RandomInteger[{2, 10}]}, {questionType, 
+     question, RandomInteger[{2, 10}]}];, {questionType, 
+    RandomChoice[{"Addition", "Subtraction", "Multiplication"}], 
+    RandomInteger[{1, 10}], RandomInteger[{1, 10}]}]]
+
+SolveQuestion[{"Geometry", "Area", a_, b_}] := a*b
+SolveQuestion[{"Geometry", "Perimeter", a_, b_}] := 2*(a + b)
+SolveQuestion[{"Geometry", "Area", a_}] := Pi*a^2
+SolveQuestion[{"Geometry", "Perimeter", a_}] := 2*Pi*a
+SolveQuestion[{"Arithmetic", "Addition", a_, b_}] := a + b
+SolveQuestion[{"Arithmetic", "Subtraction", a_, b_}] := a - b
+SolveQuestion[{"Arithmetic", "Multiplication", a_, b_}] := a*b
+
+
+MathGame[]
